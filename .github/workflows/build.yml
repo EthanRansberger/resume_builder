@@ -62,7 +62,7 @@ jobs:
 
     - name: Set Static Tag
       id: set_tag
-      run: echo "::set-output name=STATIC_TAG::v1.0.2"
+      run: echo "::set-output name=STATIC_TAG::v1.0.3"
 
     - name: Create Release
       id: create_release
