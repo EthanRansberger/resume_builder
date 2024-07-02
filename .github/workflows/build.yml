@@ -1,0 +1,90 @@
+name: Java and EXE Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn clean package
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: resume-builder-jar
+        path: target/*.jar
+
+    - name: Download JAR artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: resume-builder-jar
+        path: target
+
+    - name: Download and Extract Launch4j
+      run: |
+        wget https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-linux.tar.gz
+        tar -xzf launch4j-3.14-linux.tar.gz
+
+    - name: Convert JAR to EXE
+      run: |
+        ./launch4j/launch4j launch4j-config.xml
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: resume-builder-exe
+        path: target/resume-builder.exe
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0
+        release_name: Release v1.0.0
+        draft: false
+        prerelease: false
+
+    - name: Upload JAR to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/resume-builder-1.0-SNAPSHOT.jar
+        asset_name: resume-builder-1.0-SNAPSHOT.jar
+        asset_content_type: application/java-archive
+
+    - name: Upload EXE to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/resume-builder.exe
+        asset_name: resume-builder.exe
+        asset_content_type: application/octet-stream
