@@ -1,4 +1,4 @@
-name: Java CI
+name: Java Build
 
 on:
   push:
@@ -31,15 +31,8 @@ jobs:
     - name: Build with Maven
       run: mvn clean package
 
-    - name: Set up Launch4j
-      run: sudo apt-get install launch4j
-
-    - name: Convert JAR to EXE
-      run: |
-        launch4j launch4j-config.xml
-
-    - name: Upload EXE artifact
+    - name: Upload JAR artifact
       uses: actions/upload-artifact@v2
       with:
-        name: resume-builder-exe
-        path: target/resume-builder.exe
+        name: resume-builder-jar
+        path: target/*.jar

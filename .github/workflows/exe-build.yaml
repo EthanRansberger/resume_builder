@@ -1,0 +1,36 @@
+name: EXE Build
+
+on:
+  workflow_run:
+    workflows: ["Java Build"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download JAR artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: resume-builder-jar
+        path: target
+
+    - name: Download and Extract Launch4j
+      run: |
+        wget https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-linux.tar.gz
+        tar -xzf launch4j-3.14-linux.tar.gz
+
+    - name: Convert JAR to EXE
+      run: |
+        ./launch4j/launch4j launch4j-config.xml
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: resume-builder-exe
+        path: target/resume-builder.exe
