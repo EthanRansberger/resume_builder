@@ -1,14 +1,12 @@
 package com.resumebuilder;
 
-import com.resumebuilder.ui.MainFrame;
-
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MainFrame frame = new MainFrame();
-            frame.setVisible(true);
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
         });
     }
 }
