@@ -45,8 +45,8 @@ jobs:
 
     - name: Download and Extract Launch4j
       run: |
-        wget https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-linux.tar.gz
-        tar -xzf launch4j-3.14-linux.tar.gz
+        wget https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-linux.tgz
+        tar -xzf launch4j-3.14-linux.tgz
 
     - name: Convert JAR to EXE
       run: |
