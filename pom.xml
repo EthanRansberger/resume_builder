@@ -19,14 +19,14 @@
             <version>2.0.24</version>
         </dependency>
 
-        <!-- iText Core -->
+        <!-- iText Kernel -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
             <version>7.1.16</version>
         </dependency>
 
-        <!-- iText Layout (for creating layout-based PDFs) -->
+        <!-- iText Layout -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>layout</artifactId>
@@ -54,8 +54,8 @@
                                 </transformers>
                             </configuration>
                         </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
