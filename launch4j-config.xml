@@ -22,16 +22,10 @@
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64</runtimeBits>
   </jre>
-  <logging>
-    <file>launch4j.log</file>
-    <level>DEBUG</level>
-  </logging>
-  <stdout>
-    <file>output.log</file>
-    <append>false</append>
-  </stdout>
-  <stderr>
-    <file>error.log</file>
-    <append>false</append>
-  </stderr>
+  <outfile>resume-builder.exe</outfile>
+  <classPath>
+    <mainClass>com.resumebuilder.Main</mainClass>
+  </classPath>
+  <stdout>output.log</stdout>
+  <stderr>error.log</stderr>
 </launch4jConfig>
