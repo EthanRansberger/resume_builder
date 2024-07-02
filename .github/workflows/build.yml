@@ -61,14 +61,31 @@ jobs:
         name: resume-builder-exe
         path: target/resume-builder.exe
 
+    - name: Get latest tag
+      id: get_tag
+      run: echo ::set-output name=LATEST_TAG::$(git describe --tags --abbrev=0)
+
+    - name: Increment version
+      id: increment_version
+      run: |
+        LATEST_TAG=${{ steps.get_tag.outputs.LATEST_TAG }}
+        echo "LATEST_TAG=$LATEST_TAG"
+        VERSION_PARTS=(${LATEST_TAG//./ })
+        MAJOR=${VERSION_PARTS[0]//v/}
+        MINOR=${VERSION_PARTS[1]}
+        PATCH=${VERSION_PARTS[2]}
+        PATCH=$((PATCH + 1))
+        NEW_TAG="v$MAJOR.$MINOR.$PATCH"
+        echo ::set-output name=NEW_TAG::$NEW_TAG
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.0.0
-        release_name: Release v1.0.0
+        tag_name: ${{ steps.increment_version.outputs.NEW_TAG }}
+        release_name: Release ${{ steps.increment_version.outputs.NEW_TAG }}
         draft: false
         prerelease: false
 
