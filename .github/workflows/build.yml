@@ -52,8 +52,7 @@ jobs:
         tar -xzf launch4j-3.14-linux.tgz
 
     - name: Convert JAR to EXE
-      run: |
-        ./launch4j/launch4j launch4j-config.xml
+      run: ./launch4j/launch4j launch4j-config.xml
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v2
@@ -64,8 +63,8 @@ jobs:
     - name: Get latest tag
       id: get_tag
       run: |
-        echo "LATEST_TAG=$(git describe --tags --abbrev=0)"
-        echo ::set-output name=LATEST_TAG::$(git describe --tags --abbrev=0)
+        LATEST_TAG=$(git describe --tags --abbrev=0)
+        echo "::set-output name=LATEST_TAG::$LATEST_TAG"
 
     - name: Increment version
       id: increment_version
@@ -79,10 +78,11 @@ jobs:
         PATCH=$((PATCH + 1))
         NEW_TAG="v$MAJOR.$MINOR.$PATCH"
         echo "NEW_TAG=$NEW_TAG"
-        echo ::set-output name=NEW_TAG::$NEW_TAG
+        echo "::set-output name=NEW_TAG::$NEW_TAG"
 
     - name: Check New Tag
-      run: echo "New Tag: ${{ steps.increment_version.outputs.NEW_TAG }}"
+      run: |
+        echo "New Tag: ${{ steps.increment_version.outputs.NEW_TAG }}"
 
     - name: Create Release
       id: create_release
