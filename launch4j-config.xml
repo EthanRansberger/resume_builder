@@ -22,12 +22,16 @@
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64</runtimeBits>
   </jre>
-  <output>
+  <logging>
+    <file>launch4j.log</file>
+    <level>DEBUG</level>
+  </logging>
+  <stdout>
     <file>output.log</file>
     <append>false</append>
-  </output>
-  <err>
+  </stdout>
+  <stderr>
     <file>error.log</file>
     <append>false</append>
-  </err>
+  </stderr>
 </launch4jConfig>
